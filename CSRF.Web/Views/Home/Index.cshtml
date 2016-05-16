@@ -1,0 +1,27 @@
+﻿@model  CSRF.Web.Models.HomeView
+@{
+    ViewBag.Title = "主页";
+}
+
+<h1>当前用户：@Model.CurrentUser</h1>
+<p>
+    @Html.ActionLink("转账", "Transfer")
+    @Html.ActionLink("转账2", "Transfer2")
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>用户</th>
+            <th>帐号金额</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model.Users)
+        {
+            <tr>
+                <td>@user.Username</td>
+                <td>@user.Account</td>
+            </tr>
+        }
+    </tbody>
+</table>

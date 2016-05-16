@@ -1,0 +1,53 @@
+﻿@model  CSRF.Web.Models.TransferView
+@{
+    ViewBag.Title = "转账2";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>转账2</h2>
+<div class="container">
+    <div>
+        <div class="form-group">
+            <label>当前用户</label>
+            <p class="form-control-static">@Model.CurrentUser</p>
+        </div>
+
+        <div class="form-group">
+            <label>用户名</label>
+            @Html.TextBoxFor(m => m.TargetUser, new { @class = "form-control", placeholder = "用户名" })
+        </div>
+        <div class="form-group">
+            <label>转账金额</label>
+            @Html.TextBoxFor(m => m.Amount, new { @class = "form-control", placeholder = "转账金额" })
+        </div>
+        <button id="btnSubmit" type="button" class="btn btn-default">转账</button>
+    </div>
+</div>
+@section Scripts {
+    <script type="text/javascript">
+        $(function () {
+            var token = $('@Html.AntiForgeryToken()').val();
+
+            $('#btnSubmit').click(function () {
+                var targetUser = $('#TargetUser').val();
+                var amount = $('#Amount').val();
+                //var data = { 'targetUser': targetUser, 'amount': amount, __RequestVerificationToken:token };
+                var data = { 'targetUser': targetUser, 'amount': amount };
+                return $.ajax({
+                    url: '@Url.Action("Transfer2", "Home")',
+                    type: 'POST',
+                    data: JSON.stringify(data),
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    traditional: 'true',
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader('__RequestVerificationToken', token);
+                    },
+                    success:function() {
+                        window.location = '@Url.Action("Index", "Home")';
+                    }
+                });
+            });
+        });
+    </script>
+}

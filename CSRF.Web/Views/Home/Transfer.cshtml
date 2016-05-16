@@ -1,0 +1,27 @@
+﻿@model  CSRF.Web.Models.TransferView
+@{
+    ViewBag.Title = "转账";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>转账</h2>
+<div class="container">
+    @using (Html.BeginForm("Transfer", "Home", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-group">
+            <label>当前用户</label>
+            <p class="form-control-static">@Model.CurrentUser</p>
+        </div>
+        <div class="form-group">
+            <label>用户名</label>
+            @Html.TextBoxFor(m => m.TargetUser, new { @class = "form-control", placeholder = "用户名" })
+        </div>
+        <div class="form-group">
+            <label>转账金额</label>
+            @Html.TextBoxFor(m => m.Amount, new { @class = "form-control", placeholder = "转账金额" })
+        </div>
+        <button type="submit" class="btn btn-default">转账</button>
+    }
+</div>
+
